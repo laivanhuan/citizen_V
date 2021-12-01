@@ -1,0 +1,31 @@
+{
+  "name": "citizen_v",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laivanhuan/citizen_V.git"
+  },
+  "author": "Lai Huan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laivanhuan/citizen_V/issues"
+  },
+  "homepage": "https://github.com/laivanhuan/citizen_V#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "sequelize": "^6.12.0-alpha.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
