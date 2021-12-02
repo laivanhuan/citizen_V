@@ -1,0 +1,1 @@
+module.exports.provinceController = require('./province.controller');

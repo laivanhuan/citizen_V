@@ -1,0 +1,45 @@
+{
+ 
+    "development": {
+ 
+        "username": "root",
+ 
+        "password": "rootpassword",
+ 
+        "database": "citizenv",
+ 
+        "host": "localhost",
+ 
+        "dialect": "mysql"
+ 
+    },
+ 
+    "test": {
+ 
+        "username": "",
+ 
+        "password": null,
+ 
+        "database": "",
+ 
+        "host": "",
+ 
+        "dialect": "mysql"
+ 
+    },
+ 
+    "production": {
+ 
+        "username": "",
+ 
+        "password": null,
+ 
+        "database": "",
+ 
+        "host": "",
+ 
+        "dialect": "mysql"
+ 
+    }
+ 
+}

@@ -2,10 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const models = require('./models');
+const routes = require('./routes');
 
 require('dotenv').config();
 
 const app = express();
+
+models.sequelize.sync().then(function() {
+    console.log('Connected DB');
+}).catch(function(err) {
+    console.log(err, 'Something went wrong with the Database Update!');
+});
+
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -20,6 +29,8 @@ app.use(session({
 }));
 
 const PORT = process.env.PORT || 3000;
+
+app.use('/provinces', routes.provinceRouter);
 
 app.use(function(_, res){
     res.status(404).render('404');
