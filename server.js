@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
 const models = require('./models');
-const routes = require('./routes');
+const routers = require('./routes');
+const middlewres = require('./middlewares');
 
 require('dotenv').config();
 
@@ -30,10 +32,12 @@ app.use(session({
 
 const PORT = process.env.PORT || 3000;
 
-app.use('/provinces', routes.provinceRouter);
+app.use('/provinces', routers.provinceRouter);
+app.use('/users',middlewres.authenticate, routers.userRouter);
+app.use('/auth', routers.authRouter);
 
 app.use(function(_, res){
-    res.status(404).render('404');
+    res.status(404).json('404 Not Found!');
 });
 
 app.listen(PORT, (err) => {
