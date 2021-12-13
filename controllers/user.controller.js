@@ -4,21 +4,27 @@ const jwt = require('jsonwebtoken');
 const {users} = require('../models');
 const {Response, Contants} = require('../utils');
 
-const getAllUser = async (req, res) => {
-    try {
-        const userList = await users.findAll({limit: 10});
-        const response = new Response(200, "", userList);
-        res.status(200).send(response);
-    } catch (error) {
-        const response = new Response(500, "Error", error);
-        res.status(500).send(response);
-    }
-}
-
 const createUser = async (req, res) => {
     try {
         const {username, password, province_id, district_id, ward_id, village_id, role} = req.body;
         const hash_password = bcrypt.hashSync(password, 10);
+
+        if(!role || !Contants.USER.ROLE[role]) {
+            const response = new Response(500, "Error: Must have 'role' field.");
+            return res.status(500).send(response);
+        }
+
+        if(Contants.USER.ROLE[role] !== Contants.USER.ROLE.ADMIN) {
+            const whereQuery = (province_id && district_id && ward_id && village_id)? {province_id, district_id, ward_id, village_id} :
+                                (province_id && district_id && ward_id)? {province_id, district_id, ward_id} :
+                                (province_id && district_id)? {province_id, district_id} : {province_id};
+            const userIsExist = await users.findOne({where: {...whereQuery}});
+            if(userIsExist) {
+                const response = new Response(500, "Error: User for this location is exist!");
+                return res.status(500).send(response);
+            }
+        }
+
         const newUser = {
             username,
             role: Contants.USER.ROLE[role],
@@ -76,7 +82,6 @@ const authenticate = async (req, res) => {
 }
 
 module.exports = {
-    getAllUser,
     createUser,
     authenticate
 }

@@ -32,7 +32,7 @@ app.use(session({
 
 const PORT = process.env.PORT || 3000;
 
-app.use('/provinces', routers.provinceRouter);
+app.use('/location', routers.locationRouter);
 app.use('/users',middlewres.authenticate, routers.userRouter);
 app.use('/auth', routers.authRouter);
 

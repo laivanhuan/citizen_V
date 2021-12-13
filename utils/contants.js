@@ -1,7 +1,7 @@
 module.exports = {
     USER: {
         ROLE: {
-            ADMIN: 0,
+            ADMIN: -1,
             PROVINCE: 1,
             DISTRICT: 2,
             WARD: 3,
