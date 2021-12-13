@@ -1,0 +1,24 @@
+module.exports = function(sequelize, Sequelize) {
+    const District = sequelize.define('districts', {
+        id: {
+            autoIncrement: true,
+            primaryKey: true,
+            type: Sequelize.INTEGER
+        },
+ 
+        name: {
+            type: Sequelize.STRING
+        },
+ 
+        prefix: {
+            type: Sequelize.STRING
+        },
+
+        province_id: {
+            type: Sequelize.INTEGER
+        }
+        
+    }, {createdAt: false, updatedAt: false});
+
+    return District;
+}
