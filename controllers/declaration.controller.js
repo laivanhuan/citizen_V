@@ -86,9 +86,37 @@ const updateDeclaration = async (req, res) => {
     }
 }
 
+const deleteDeclaration = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if(!id) {
+            const response = new Response(500, "Missing require field.");
+            return res.status(500).send(response);
+        }
+
+        const oldDeclaration = await declarations.findOne({where: {id}});
+
+        if(!oldDeclaration) {
+            const response = new Response(500, "Declaration does not exist.");
+            return res.status(500).send(response);
+        }
+
+        await declarations.delete({where: {id}});
+
+        const response = new Response(200, "Success! A declaration was deleted.");
+        res.status(500).send(response);
+
+    } catch (error) {
+        const response = new Response(500, "Error", error);
+        res.status(500).send(response);
+    }
+}
+
 
 module.exports = {
     createNewDeclaration,
     updateDeclaration,
-    getDeclaration
+    getDeclaration,
+    deleteDeclaration
 }
