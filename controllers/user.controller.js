@@ -51,7 +51,8 @@ const authenticate = async (req, res) => {
     try {
         const {username, password} = req.body;
         
-        const user = await users.findOne({where: {username}, attributes: ['id', 'username', 'password']});
+        const user = await users.findOne({where: {username}});
+
 
         if(!user) {
             const response = new Response(500, "User not exist!");
@@ -65,6 +66,7 @@ const authenticate = async (req, res) => {
 
         const signData = {
             id: user.id,
+            role: user.role,
             username: user.username,
             province_id: user.province_id,
             district_id: user.district_id,

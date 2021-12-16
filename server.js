@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const models = require('./models');
 const routers = require('./routes');
-const middlewres = require('./middlewares');
+const middlewares = require('./middlewares');
 
 require('dotenv').config();
 
@@ -35,8 +35,9 @@ app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 app.use('/location', routers.locationRouter);
-app.use('/users',middlewres.authenticate, routers.userRouter);
+app.use('/users', middlewares.authenticate, routers.userRouter);
 app.use('/auth', routers.authRouter);
+app.use('/declaration', routers.declarationRouter);
 
 app.use(function(_, res){
     res.status(404).json('404 Not Found!');
