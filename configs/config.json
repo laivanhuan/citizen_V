@@ -8,7 +8,7 @@
  
         "database": "citizenv",
  
-        "host": "localhost",
+        "host": "103.81.84.51",
  
         "dialect": "mysql"
  
