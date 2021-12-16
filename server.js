@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cors = require('cors');
 
 const models = require('./models');
 const routers = require('./routes');
@@ -29,6 +30,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 

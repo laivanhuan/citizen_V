@@ -51,7 +51,7 @@ const authenticate = async (req, res) => {
     try {
         const {username, password} = req.body;
         
-        const user = await users.findOne({where: {username}, attibutes: ['id', 'username', 'password']});
+        const user = await users.findOne({where: {username}, attributes: ['id', 'username', 'password']});
 
         if(!user) {
             const response = new Response(500, "User not exist!");
@@ -81,7 +81,30 @@ const authenticate = async (req, res) => {
     }
 }
 
+
+const getAccountInfo = async (req, res) => {
+    try {
+        const id = req.user_data.id;
+        const user = await users.findOne({
+            where: {id},
+            attributes: ['id', 'username', 'role', 'province_id', 'district_id', 'ward_id', 'village_id', 'status']
+        });
+
+        if(!user) {
+            const response = new Response(404, "User not exist!");
+            return res.status(404).send(response);
+        }
+
+        const response = new Response(200, "", user);
+        res.status(200).send(response);
+    } catch (error) {
+        const response = new Response(500, "Error", error);
+        res.status(500).send(response);
+    }
+}
+
 module.exports = {
     createUser,
-    authenticate
+    authenticate,
+    getAccountInfo
 }
