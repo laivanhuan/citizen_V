@@ -16,7 +16,11 @@ module.exports = function(sequelize, Sequelize) {
 
         province_id: {
             type: Sequelize.INTEGER
-        }
+        },
+
+        code: {
+            type: Sequelize.STRING
+        },
         
     }, {createdAt: false, updatedAt: false});
 

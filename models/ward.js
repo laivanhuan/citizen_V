@@ -20,7 +20,11 @@ module.exports = function(sequelize, Sequelize) {
 
         district_id: {
             type: Sequelize.INTEGER
-        }
+        },
+
+        code: {
+            type: Sequelize.STRING
+        },
         
     }, {createdAt: false, updatedAt: false});
 

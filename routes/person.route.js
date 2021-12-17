@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', personController.getPerson);
 router.get('/detail/:id', personController.getPersonDetails);
 router.post('/', personController.createNewPerson);
-router.put('/', personController.updatePersonInfo);
-router.delete('/', personController.deletePersonInfo);
+router.put('/:id', personController.updatePersonInfo);
+router.delete('/:id', personController.deletePersonInfo);
 
 module.exports = router;
