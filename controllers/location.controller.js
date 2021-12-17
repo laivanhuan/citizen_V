@@ -37,6 +37,50 @@ const getLocation = async (req, res) => {
     }
 }
 
+const createVillage = async (req, res) => {
+    try {
+        const {province_id, district_id, ward_id, name, prefix} = req.body;
+
+        if(!name || !prefix) {
+            const response = new Response(500, "Missing require field.");
+            return res.status(500).send(response)
+        }
+
+        const [province, district, ward] = await Promise.all([
+            provinces.findOne({where: {id: province_id}}),
+            districts.findOne({where: {id: district_id}}),
+            wards.findOne({where: {id: ward_id}})
+        ]);
+
+        if(!province || !district || !ward) {
+            const response = new Response(500, "Address error!");
+            return res.status(500).send(response)
+        }
+
+        const village = {
+            province_id, 
+            district_id, 
+            ward_id, 
+            name, 
+            prefix,
+            created_by: req.user_data.id,
+            updated_by: req.user_data.id,
+            created: new Date(),
+            updated: new Date()
+        }
+
+        await villages.create(village);
+
+        const response = new Response(200, "Success! A village was created.");
+        res.status(500).send(response)
+
+    } catch (error) {
+        const response = new Response(500, "Error", error);
+        res.status(500).send(response);
+    }
+}
+
 module.exports = {
     getLocation,
+    createVillage
 }

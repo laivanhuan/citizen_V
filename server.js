@@ -36,6 +36,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use('/location', routers.locationRouter);
 app.use('/users', middlewares.authenticate, routers.userRouter);
+app.use('/person', middlewares.authenticate, routers.personRouter);
 app.use('/auth', routers.authRouter);
 app.use('/declaration', routers.declarationRouter);
 
