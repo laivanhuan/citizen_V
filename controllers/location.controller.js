@@ -46,7 +46,7 @@ const createVillage = async (req, res) => {
             return res.status(500).send(response)
         }
 
-        const [province, district, ward] = Promise.all([
+        const [province, district, ward] = await Promise.all([
             provinces.findOne({where: {id: province_id}}),
             districts.findOne({where: {id: district_id}}),
             wards.findOne({where: {id: ward_id}})

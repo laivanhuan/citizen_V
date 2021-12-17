@@ -155,8 +155,21 @@ const createNewPerson = async (req, res) => {
 
         const declaration = await declarations.findOne({where: {id: declaration_id}});
 
-        if(!declaration 
-            || !province_id || !district_id || !ward_id || !village_id
+        if(!declaration) {
+            const response = new Response(500, "Error! Declaration was wrong.");
+            return res.status(500).send(response);
+        }
+
+        const time = new Date();
+        const dec_time_start = new Date(declaration.time_start);
+        const dec_time_end = new Date(declaration.time_end);
+
+        if(time > dec_time_end || time < dec_time_start) {
+            const response = new Response(500, "Error! Declaration was outdated or comming soon.");
+            return res.status(500).send(response);
+        }
+
+        if( !province_id || !district_id || !ward_id || !village_id
             || !o_province_id || !o_district_id || !o_ward_id || !o_village_id
             || !p_province_id || !p_district_id || !p_ward_id || !p_village_id) {
                 const response = new Response(500, "Error! Missing require fields or data wrong.");
