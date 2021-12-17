@@ -18,7 +18,7 @@ const getPerson = async (req, res) => {
         const { page = 1 } = req.query;
         const size = 20;
 
-        const data = await declarations.findAll({
+        const data = await persons.findAll({
             limit: size,
             offset: (page - 1) * size,
             where: {declaration_id}
@@ -36,7 +36,7 @@ const getPerson = async (req, res) => {
 const getPersonDetails = async (req, res) => {
     try {
         const {id} = req.params;
-        const person = persons.findOne({where: {id}});
+        const person = await persons.findOne({where: {id}});
         if(!person) {
             const response = new Response(404, "404 Not found!");
             res.status(404).send(response);
@@ -51,9 +51,8 @@ const getPersonDetails = async (req, res) => {
 
 const updatePersonInfo = async (req, res) => {
     try {
-        
+        const {id} = req.params;
         const {
-            id,
             declaration_id,
             first_name,
             last_name,
@@ -218,12 +217,12 @@ const createNewPerson = async (req, res) => {
 const deletePersonInfo = async (req, res) => {
     try {
         const {id} = req.params;
-        const person = persons.findOne({where: {id}});
+        const person = await persons.findOne({where: {id}});
         if(!person) {
             const response = new Response(404, "404 Not found!");
-            res.status(404).send(response);
+            return res.status(404).send(response);
         }
-        await persons.delete({where: {id}});
+        await persons.destroy({where: {id}});
         const response = new Response(200, "Success! Deleted.");
         res.status(500).send(response);
 

@@ -41,6 +41,10 @@ module.exports = function(sequelize, Sequelize) {
         updated: {
             type: Sequelize.DATE
         },
+
+        code: {
+            type: Sequelize.STRING
+        },
         
     }, {createdAt: false, updatedAt: false});
 
