@@ -2,12 +2,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const {users} = require('../models');
-const {Response, Contants} = require('../utils');
+const {Response, Contants, HelpFunctions} = require('../utils');
 
 const createUser = async (req, res) => {
     try {
         const {username, password, province_id, district_id, ward_id, village_id, role} = req.body;
         const hash_password = bcrypt.hashSync(password, 10);
+
+        const isAddress = await HelpFunctions.checkAddress(province_id, district_id, ward_id, village_id);
+        if(!isAddress) {
+            const response = new Response(500, "Error: Address is wrong!");
+            return res.status(500).send(response);
+        }
 
         if(!role || !Contants.USER.ROLE[role]) {
             const response = new Response(500, "Error: Must have 'role' field.");

@@ -1,5 +1,5 @@
 const {provinces, districts, wards, villages, sequelize} = require('../models');
-const {Response, Contants} = require('../utils');
+const {Response, Contants, HelpFunctions} = require('../utils');
 
 const getLocation = async (req, res) => {
     try {
@@ -72,7 +72,7 @@ const createVillage = async (req, res) => {
         await villages.create(village);
 
         const response = new Response(200, "Success! A village was created.");
-        res.status(500).send(response);
+        res.status(200).send(response);
 
     } catch (error) {
         const response = new Response(500, "Error", error);
@@ -95,6 +95,12 @@ const createCodeLocation = async (req, res) => {
 
         if(!code || !province_id || (!district_id && !ward_id && !village_id)) {
             const response = new Response(500, "Error! Missing require fields.");
+            return res.status(500).send(response);
+        }
+
+        const isAddress = await HelpFunctions.checkAddress(province_id, district_id, ward_id, village_id);
+        if(!isAddress) {
+            const response = new Response(500, "Error: Address is wrong!");
             return res.status(500).send(response);
         }
 
@@ -124,7 +130,7 @@ const createCodeLocation = async (req, res) => {
                 return res.status(500).send(response);
             }
             const hasCodeWard = await verifyHasCode(wards, ward_id);
-            if(hasCodeWard) {
+            if(!hasCodeWard) {
                 const response = new Response(500, "Error! The ward does not have code.");
                 return res.status(500).send(response);
             }
@@ -137,7 +143,7 @@ const createCodeLocation = async (req, res) => {
         }
 
         const response = new Response(200, "Success! Code was added");
-        res.status(500).send(response);
+        res.status(200).send(response);
     } catch (error) {
         const response = new Response(500, "Error", error);
         res.status(500).send(response);
