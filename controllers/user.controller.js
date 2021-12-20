@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const {users} = require('../models');
+const {users, Sequelize} = require('../models');
 const {Response, Contants, HelpFunctions} = require('../utils');
 
 const createUser = async (req, res) => {
@@ -111,8 +111,56 @@ const getAccountInfo = async (req, res) => {
     }
 }
 
+const lockAccount = async (req, res) => {
+    try {
+
+        const {type, id} = req.params;
+
+        const user = req.user_data;
+        const account = await users.findOne({where: {id}});
+
+        if(user.role >= account.role || user.role != -1) {
+            const response = new Response(500, "Error! Permission denied.");
+            return res.status(500).send(response);
+        }
+
+        const Op = Sequelize.Op;
+
+        if(type == 'lock') {
+
+            await users.update(
+                {status: 0, updated_by: user.id, updated: new Date()}, 
+                {where: {
+                    username: {[Op.like]: `${account.username}%`}
+                }
+                });
+
+            const response = new Response(200, "Success! User was locked.");
+            return res.status(200).send(response);
+        }else if(type == 'unlock'){
+
+            await users.update(
+                {status: 1, updated_by: user.id, updated: new Date()}, 
+                {where: {
+                    username: {[Op.like]: `${account.username}%`}
+                }
+                });
+
+            const response = new Response(200, "Success! User was unlocked.");
+            return res.status(200).send(response);
+        }
+
+        const response = new Response(500, "Error! Type not found.");
+        res.status(500).send(response);
+    } catch (error) {
+        const response = new Response(500, "Error", error);
+        res.status(500).send(response);
+    }
+}
+
 module.exports = {
     createUser,
     authenticate,
-    getAccountInfo
+    getAccountInfo,
+    lockAccount
 }
