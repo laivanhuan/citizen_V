@@ -13,7 +13,7 @@ const getDeclaration = async (req, res) => {
         });
 
         const response = new Response(200, "", data);
-        res.status(500).send(response);
+        res.status(200).send(response);
 
     } catch (error) {
         const response = new Response(500, "Error", error);
