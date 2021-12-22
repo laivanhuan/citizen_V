@@ -158,9 +158,44 @@ const lockAccount = async (req, res) => {
     }
 }
 
+const getChildUser = async (req, res) => {
+    try {
+        const user = req.user_data;
+
+        if(user.role == Contants.USER.ROLE.ADMIN) {
+            const { page = 1 } = req.query;
+            const size = 20;
+
+            const data = await users.findAll({
+                limit: size,
+                offset: (page - 1) * size,
+                attributes: ['id', 'username', 'province_id', 'district_id', 'ward_id', 'village_id', 'status', 'role']
+            });
+    
+            const response = new Response(200, "", data);
+            return res.status(200).send(response);
+        }
+
+        const Op = Sequelize.Op;
+        const userList = await users.findAll({
+            attributes: ['id', 'username', 'province_id', 'district_id', 'ward_id', 'village_id', 'status', 'role'],
+            where: {
+                username: {[Op.like]: `${user.username}%`}
+            }
+        });
+
+        const response = new Response(200, "", userList);
+        res.status(200).send(response);
+    } catch (error) {
+        const response = new Response(500, "Error", error);
+        res.status(500).send(response);
+    }
+}
+
 module.exports = {
     createUser,
     authenticate,
     getAccountInfo,
-    lockAccount
+    lockAccount,
+    getChildUser
 }
