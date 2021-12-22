@@ -3,7 +3,7 @@ const {Response} = require('../utils');
 
 const getPerson = async (req, res) => {
     try {
-        const{ declaration_id } = req.body;
+        const{ declaration_id } = req.query;
         if(!declaration_id) {
             const response = new Response(500, "Missing require field!");
             return res.status(500).send(response);
@@ -25,7 +25,7 @@ const getPerson = async (req, res) => {
         });
 
         const response = new Response(200, "", data);
-        res.status(500).send(response);
+        res.status(200).send(response);
 
     } catch (error) {
         const response = new Response(500, "Error!", error);
