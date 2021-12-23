@@ -3,11 +3,18 @@ const {Response} = require('../utils');
 
 const getPerson = async (req, res) => {
     try {
-        const{ declaration_id } = req.query;
+        const{ declaration_id, province_id, ward_id, district_id, village_id } = req.query;
         if(!declaration_id) {
             const response = new Response(500, "Missing require field!");
             return res.status(500).send(response);
         }
+
+        let queryObj = {declaration_id};
+        queryObj = province_id?{...queryObj, province_id}:queryObj;
+        queryObj = district_id?{...queryObj, district_id}:queryObj;
+        queryObj = ward_id?{...queryObj, ward_id}:queryObj;
+        queryObj = village_id?{...queryObj, village_id}:queryObj;
+
 
         const declaration = await declarations.findOne({where: {id: declaration_id}});
         if(!declaration) {
@@ -18,10 +25,10 @@ const getPerson = async (req, res) => {
         const { page = 1 } = req.query;
         const size = 20;
 
-        const data = await persons.findAll({
+        const data = await persons.findAndCountAll({
             limit: size,
             offset: (page - 1) * size,
-            where: {declaration_id}
+            where: queryObj
         });
 
         const response = new Response(200, "", data);
