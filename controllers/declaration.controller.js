@@ -6,7 +6,7 @@ const getDeclaration = async (req, res) => {
         const { page = 1 } = req.query;
         const size = 10;
 
-        const data = await declarations.findAll({
+        const data = await declarations.findAndCountAll({
             limit: size,
             offset: (page - 1) * size,
             attributes: ['id', 'title', 'time_start', 'time_end', 'created', 'updated']

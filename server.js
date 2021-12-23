@@ -19,7 +19,7 @@ models.sequelize.sync().then(function() {
 });
 
 
-app.use(express.static('public'));
+app.use('/public', express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +39,7 @@ app.use('/users', middlewares.authenticate, routers.userRouter);
 app.use('/person', middlewares.authenticate, routers.personRouter);
 app.use('/auth', routers.authRouter);
 app.use('/declaration', routers.declarationRouter);
+app.use('/file', middlewares.authenticate, routers.fileRouter);
 
 app.use(function(_, res){
     res.status(404).json('404 Not Found!');
