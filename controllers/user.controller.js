@@ -163,7 +163,7 @@ const getChildUser = async (req, res) => {
 
         if(user.role == Contants.USER.ROLE.ADMIN) {
             const { page = 1 } = req.query;
-            const size = 20;
+            const size = 6;
 
             const data = await users.findAndCountAll({
                 limit: size,

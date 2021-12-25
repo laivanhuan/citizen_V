@@ -4,7 +4,7 @@ const {Response} = require('../utils');
 const getDeclaration = async (req, res) => {
     try {
         const { page = 1 } = req.query;
-        const size = 10;
+        const size = 5;
 
         const data = await declarations.findAndCountAll({
             limit: size,
